@@ -4,6 +4,13 @@ import os from "node:os";
 import path from "node:path";
 import { openDb, closeDb, type Db } from "../src/db/connection.js";
 import { migrate, appliedMigrations } from "../src/db/migrate.js";
+import { migrationsDir } from "../src/db/locations.js";
+
+/** All migration files currently on disk (keeps tests in sync with the repo). */
+const ALL_MIGRATIONS = fs
+  .readdirSync(migrationsDir)
+  .filter((f) => f.endsWith(".sql"))
+  .sort();
 
 const tmpDirs: string[] = [];
 const dbs: Db[] = [];
@@ -59,7 +66,7 @@ describe("migrations", () => {
   it("creates the full schema on an empty database", () => {
     const { db } = freshDb();
     const applied = migrate(db);
-    expect(applied).toEqual(["001_init.sql"]);
+    expect(applied).toEqual(ALL_MIGRATIONS);
 
     const tables = new Set(
       db
@@ -74,9 +81,9 @@ describe("migrations", () => {
 
   it("is idempotent — running twice applies nothing new", () => {
     const { db } = freshDb();
-    expect(migrate(db)).toEqual(["001_init.sql"]);
+    expect(migrate(db)).toEqual(ALL_MIGRATIONS);
     expect(migrate(db)).toEqual([]);
-    expect(appliedMigrations(db)).toEqual(["001_init.sql"]);
+    expect(appliedMigrations(db)).toEqual(ALL_MIGRATIONS);
   });
 
   it("enables foreign keys", () => {
