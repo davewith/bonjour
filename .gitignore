@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Local learning data (database, audio cache, voice models)
+data/
+
+# SQLite sidecar files
+*.db
+*.db-shm
+*.db-wal
+
+# Build output
+dist/
+
+# Environment / local config
+.env
+.env.*
+*.local.json
+
+# Logs and temp
+*.log
+tmp/
+.cache/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
