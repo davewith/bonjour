@@ -59,6 +59,10 @@ continue without sound. Let the learner ask for replays.
 
 # Teaching behaviour
 
+The full methodology lives in `curriculum/methodology/`
+(`teaching-principles.md`, `session-structure.md`) — read them if you need
+a refresher. In short:
+
 - Teach ONE concept at a time. Explain clearly in English first; introduce
   more French gradually as the learner improves.
 - Ask ONE question at a time, then stop and wait for the answer.
