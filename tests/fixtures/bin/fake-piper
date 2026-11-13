@@ -1,0 +1,25 @@
+#!/bin/bash
+# Stub piper for tests: records invocations, writes an output file, honours
+# FRENCH_TTS_TEST_FAIL=1 to simulate synthesis errors.
+set -u
+if [ -n "${FRENCH_TTS_TEST_COUNTER:-}" ]; then
+  echo x >> "$FRENCH_TTS_TEST_COUNTER"
+fi
+if [ "${FRENCH_TTS_TEST_FAIL:-0}" = "1" ]; then
+  echo "stub piper: simulated failure" >&2
+  exit 2
+fi
+out=""
+prev=""
+for a in "$@"; do
+  if [ "$prev" = "-f" ]; then out="$a"; fi
+  prev="$a"
+done
+if [ -z "$out" ]; then
+  echo "stub piper: no -f output file given" >&2
+  exit 3
+fi
+# Minimal but non-empty "wav" payload
+printf 'RIFF\x24\x00\x00\x00WAVEfmt ' > "$out"
+printf 'stub-audio-payload' >> "$out"
+exit 0

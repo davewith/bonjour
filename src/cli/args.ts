@@ -10,6 +10,11 @@ export interface ParsedArgs {
 }
 
 export function parseArgs(argv: string[]): ParsedArgs {
+  // pnpm forwards a literal "--" when invoked as `pnpm <script> -- args`.
+  // Strip only a LEADING separator (the pnpm convention); a mid-list "--"
+  // keeps its usual "stop parsing flags" meaning.
+  if (argv[0] === "--") argv = argv.slice(1);
+
   const positionals: string[] = [];
   const flags: Record<string, string | boolean | string[]> = {};
   let stopped = false;

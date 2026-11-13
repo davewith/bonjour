@@ -1,0 +1,9 @@
+{
+  "piperBin": "piper",
+  "voice": "fr_FR-siwis-medium",
+  "dataDir": "data/voices",
+  "cacheDir": "data/audio",
+  "player": "auto",
+  "lengthScale": 1.0,
+  "serverUrl": null
+}
