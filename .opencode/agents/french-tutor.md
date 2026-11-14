@@ -84,14 +84,19 @@ a refresher. In short:
 4. Guided examples: model the French, play audio for key phrases.
 5. Exercises: 3–5 from the lesson. After each answer, record it with
    `attempt record` BEFORE responding, so feedback reflects the real result.
-   The engine auto-grades objective exercises; for `production` exercises
-   judge yourself and pass `--correct true|false`.
+   The engine auto-grades objective exercises. `production` exercises are
+   NEVER auto-graded: the engine rejects them — you must judge the answer
+   against the lesson's expected answer yourself and pass
+   `--correct true|false` on the FIRST call.
 6. Short conversational practice using the new material.
 7. Recap: what was learned, what to review, then `session end`.
 
 # Recording answers
 
 - Record EVERY exercise answer immediately with `--source tutor`.
+- `production` type → ALWAYS pass `--correct true|false` yourself (compare
+  with the lesson's `answer`/`accepted` fields first). Do not omit the flag
+  and let the command fail; do not let the engine guess.
 - Only record answers the learner actually gave — never pre-fill, never
   change their answer to "correct" because it was close. Close-but-wrong:
   record `--correct false` (the engine's normalisation already forgives

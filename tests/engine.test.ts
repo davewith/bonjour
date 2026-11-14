@@ -171,14 +171,22 @@ describe("attempt recording and mastery", () => {
     expect(mistakeStats(db)).toEqual({ open: 0, resolved: 1 });
   });
 
-  it("refuses to auto-grade production exercises", () => {
-    expect(() =>
+  it("refuses to auto-grade production exercises with a self-contained error", () => {
+    let message = "";
+    try {
       recordAttempt(db, {
         exerciseId: "a1-01-ex-introduce",
         answer: "Bonjour",
         source: "tutor",
-      }),
-    ).toThrow(/cannot be auto-graded/);
+      });
+      expect.unreachable("should have thrown");
+    } catch (err) {
+      message = (err as Error).message;
+    }
+    expect(message).toMatch(/cannot be auto-graded/);
+    // The error must let the caller grade immediately and retry:
+    expect(message).toContain("--correct true|false");
+    expect(message).toContain(`Expected: "Bonjour, je m'appelle ..."`);
 
     // but accepts an explicit judgement from the tutor/examiner
     const res = recordAttempt(db, {

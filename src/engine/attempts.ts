@@ -98,18 +98,19 @@ export function recordAttempt(
     isCorrect = input.correct;
     graded = "provided";
   } else {
+    const accepted = parseJsonArray(exercise.accepted_answers);
     if (exercise.type === "production") {
+      // The error includes the expected answer so the caller can judge the
+      // learner's response immediately and retry with --correct true|false.
       throw new Error(
-        `Exercise "${exercise.id}" is type production and cannot be auto-graded — supply --correct true|false`,
+        `Exercise "${exercise.id}" is type production and cannot be auto-graded — ` +
+          `judge the answer yourself and re-run with --correct true|false. ` +
+          `Expected: "${exercise.expected_answer}"` +
+          (accepted.length > 0 ? ` (also accept: ${accepted.join(" | ")})` : ""),
       );
     }
     const options = exercise.options ? parseJsonArray(exercise.options) : undefined;
-    const result = gradeAnswer(
-      input.answer,
-      exercise.expected_answer,
-      parseJsonArray(exercise.accepted_answers),
-      options,
-    );
+    const result = gradeAnswer(input.answer, exercise.expected_answer, accepted, options);
     isCorrect = result.correct;
     graded = "auto";
   }

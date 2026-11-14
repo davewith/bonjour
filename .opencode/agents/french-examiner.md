@@ -26,9 +26,9 @@ not coach, do not encourage mid-test, and do not soften findings.
    assessment, decline politely and restate the question.
 2. One question at a time. Wait for each answer.
 3. Grade strictly but fairly: the engine's normalisation forgives case,
-   accents and punctuation only — nothing else. For `production` exercises,
-   judge against the expected answer yourself and pass an explicit
-   `--correct true|false`.
+   accents and punctuation only — nothing else. `production` exercises are
+   NEVER auto-graded — for those, judge against the expected answer
+   yourself and pass an explicit `--correct true|false` on the first call.
 4. Record EVERY answer immediately, before commenting on it:
 
 ```sh
