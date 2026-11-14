@@ -48,6 +48,7 @@ Full setup details: [docs/INSTALL.md](docs/INSTALL.md).
 | `pnpm test` | Test suite (97 tests) |
 | `pnpm typecheck` | Strict TypeScript check |
 | `pnpm french --help` | Learning-engine CLI |
+| `pnpm french db backup --json` | Snapshot the database (`data/backups/`) |
 | `pnpm speak -- "text" [--no-play] [--json]` | French TTS |
 | `opencode` | Interactive tutor (`/lesson`, `/assessment`, …) |
 

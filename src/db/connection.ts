@@ -1,15 +1,24 @@
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
-import { dbPath, ensureDir } from "./locations.js";
+import { dbPath, ensureDir, isUnderDataDir } from "./locations.js";
 
 export type Db = DatabaseSync;
 
 /**
  * Open (and create if needed) the learning database.
  * Applies pragmas required for integrity and concurrency.
+ *
+ * Guard: while tests run (VITEST set), any path under data/ is refused —
+ * the live learner database is off-limits to the test suite entirely.
  */
 export function openDb(file?: string): Db {
   const resolved = file ?? dbPath();
+  if (process.env["VITEST"] && isUnderDataDir(resolved)) {
+    throw new Error(
+      `Refusing to open a database under data/ during tests: ${resolved}. ` +
+        "Use a temporary path (FRENCH_DB or mkdtemp) instead.",
+    );
+  }
   ensureDir(path.dirname(resolved));
   const db = new DatabaseSync(resolved);
   db.exec("PRAGMA foreign_keys = ON");

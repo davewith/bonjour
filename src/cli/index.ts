@@ -1,5 +1,6 @@
 import { openDb, closeDb } from "../db/connection.js";
 import { migrate } from "../db/migrate.js";
+import { backupDb, defaultBackupPath } from "../db/backup.js";
 import { syncCurriculum } from "../engine/sync.js";
 import {
   initProfile,
@@ -47,6 +48,7 @@ Commands:
   review due [--limit n]        Items due for spaced review
   mistakes [--resolved]         Open (or resolved) mistakes
   progress                      Full progress report
+  db backup [--out <path>]      Snapshot the database (default: data/backups/…)
   vocab [--lesson id] [--search q] [--limit n]
 
 Global options:
@@ -186,6 +188,15 @@ const commands: Record<string, Handler> = {
   },
 
   progress: (_args, ctx) => progressReport(ctx.db),
+
+  db: (args, ctx) => {
+    const sub = args.positionals[0];
+    if (sub === "backup") {
+      const dest = flagString(args, "out") ?? defaultBackupPath();
+      return backupDb(ctx.db, dest);
+    }
+    throw new Error("Usage: db backup [--out <path>]");
+  },
 
   vocab: (args, ctx) => ({
     vocabulary: listVocabulary(ctx.db, {

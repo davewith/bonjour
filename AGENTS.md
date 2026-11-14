@@ -10,6 +10,7 @@ tutored through OpenCode agents. No cloud services, no hosted LLMs, no GPU.
 | `pnpm test` | Run the full test suite (vitest) |
 | `pnpm typecheck` | TypeScript strict type-check |
 | `pnpm french <cmd> --json` | Learning-engine CLI (see `pnpm french --help`) |
+| `pnpm french db backup --json` | Snapshot the database to `data/backups/` |
 | `pnpm speak -- "text" [--no-play] [--json]` | Local French TTS (generate + play) |
 
 After changing TypeScript, run `pnpm typecheck` and `pnpm test`.
@@ -28,6 +29,18 @@ After changing TypeScript, run `pnpm typecheck` and `pnpm test`.
 
 ## Rules
 
+- **Learner data is irreplaceable.** NEVER run `rm`, `mv`, `dd`, `truncate`,
+  `shred`, or any shell redirection against `data/` or any `*.db` file — not
+  even databases you believe are "stale test leftovers". Progress cannot be
+  reconstructed. OpenCode permission rules in `opencode.json` also deny these
+  commands; do not attempt to work around them. If you think a database must
+  be deleted or reset, ASK THE USER FIRST. Resetting `data/` is a user
+  decision (documented in docs/INSTALL.md).
+- Tests never touch the live database: `dbPath()` and `openDb()` refuse any
+  path under `data/` while `VITEST` is set — every test must pass
+  `FRENCH_DB=<temp>` or an explicit `mkdtemp` path.
+- Before any risky manual operation on the database, take a snapshot:
+  `pnpm french db backup --json` (writes to `data/backups/`, gitignored).
 - Business logic lives in `src/`, never in agent prompt files. Agents call the
   CLI; they never run SQL and never edit `data/`.
 - The curriculum Markdown is the source of truth; `pnpm french sync` upserts it
