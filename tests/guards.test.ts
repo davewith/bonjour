@@ -92,6 +92,16 @@ describe("guard: opencode permission rules block destructive commands", () => {
       }
     }
   });
+
+  it("prompts before running the blocking UI server", () => {
+    // last-match-wins: the serve rule must come AFTER the broad french allow,
+    // so agents never silently hang on a server that never exits.
+    expect(bash["pnpm french serve*"]).toBe("ask");
+    const keys = Object.keys(bash);
+    expect(keys.indexOf("pnpm french serve*")).toBeGreaterThan(
+      keys.indexOf("pnpm french*"),
+    );
+  });
 });
 
 describe("guard: database backups", () => {

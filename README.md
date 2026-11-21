@@ -15,6 +15,10 @@ No cloud services, no hosted LLMs, no GPU, no network needed after setup.
   ladder: 1/2/4/8/15/30 days).
 - **Local French pronunciation** — Piper TTS with the `fr_FR-siwis-medium`
   voice; audio cached on disk; player auto-detection (paplay/ffplay/…).
+- **Local web UI** — `pnpm french serve` opens a browser dashboard (due
+  reviews, mastery, mistakes, lessons) and interactive practice: answer
+  exercises, hear pronunciation, self-grade production tasks. Same database
+  as the agents, so chat and browser sessions stay in sync.
 - **Two OpenCode agents**: `french-tutor` (teaches, practises, records) and
   `french-examiner` (tests without hints, reports strengths/weaknesses) —
   both driven by a structured JSON CLI, never by raw SQL.
@@ -37,6 +41,10 @@ pnpm speak -- "Bonjour, comment allez-vous ?"
 # 4. Start learning
 opencode
 #    then: /lesson      (or /practice /conversation /review /assessment /progress)
+
+# 5. Or use the web UI (dashboard + interactive practice)
+pnpm french serve
+#    then open http://127.0.0.1:7373
 ```
 
 Full setup details: [docs/INSTALL.md](docs/INSTALL.md).
@@ -45,11 +53,12 @@ Full setup details: [docs/INSTALL.md](docs/INSTALL.md).
 
 | Command | Purpose |
 | --- | --- |
-| `pnpm test` | Test suite (97 tests) |
+| `pnpm test` | Test suite (vitest, 143 tests) |
 | `pnpm typecheck` | Strict TypeScript check |
 | `pnpm french --help` | Learning-engine CLI |
 | `pnpm french db backup --json` | Snapshot the database (`data/backups/`) |
 | `pnpm speak -- "text" [--no-play] [--json]` | French TTS |
+| `pnpm french serve [--port n]` | Local web UI at http://127.0.0.1:7373 |
 | `opencode` | Interactive tutor (`/lesson`, `/assessment`, …) |
 
 Engine CLI essentials (always pass `--json` for machine-readable output):
@@ -67,13 +76,17 @@ pnpm french mistakes --json                  # open mistakes
 ## Architecture
 
 ```
-curriculum/*.md  ──sync──►  SQLite (data/learning.db)  ◄── engine CLI (src/)
-     ▲                                                    ▲
-     │ source of truth                                    │ structured JSON
-     │                                                    │
-OpenCode agents (french-tutor / french-examiner) ─────────┘
-     │
-     └── pnpm speak ──► src/tts ──► Piper (local) ──► data/audio/*.wav ──► player
+curriculum/*.md ──sync──► SQLite (data/learning.db)
+                            ▲    ▲    ▲
+       source of truth      │    │    │
+                            │    │    ├── Web UI: pnpm french serve
+                            │    │    │   (src/server + ui/, 127.0.0.1)
+                            │    │    │
+                            │    │    └── engine CLI (src/cli) ◄── OpenCode agents
+                            │    │
+                            │    └── pnpm speak ──► src/tts ──► Piper ──► data/audio/*.wav
+                            │
+                            └── every attempt, mastery and session from all of the above
 ```
 
 | Layer | Location | Depends on |
@@ -81,6 +94,7 @@ OpenCode agents (french-tutor / french-examiner) ─────────┘
 | Learning engine | `src/engine`, `src/scheduler`, `src/curriculum` | `node:sqlite`, zod, yaml |
 | TTS service | `src/tts` | Piper binary + voice model (external) |
 | CLIs | `src/cli` | the two above |
+| Web UI | `src/server`, `ui/` | engine + TTS (preact, htm — no build step) |
 | OpenCode layer | `.opencode/agents`, `.opencode/commands`, `opencode.json` | CLIs only |
 | Curriculum | `curriculum/` | nothing (pure Markdown) |
 
@@ -94,6 +108,7 @@ Business logic never lives in agent prompts; agents never touch SQL or
 | [docs/INSTALL.md](docs/INSTALL.md) | Full installation & verification |
 | [docs/TTS.md](docs/TTS.md) | Voices, licensing, config, persistent server, troubleshooting |
 | [docs/MANUAL_TTS_TEST.md](docs/MANUAL_TTS_TEST.md) | Manual real-audio test procedure |
+| [docs/MANUAL_UI_TEST.md](docs/MANUAL_UI_TEST.md) | Manual web-UI test checklist |
 | [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) | End-to-end first-lesson acceptance test |
 | [curriculum/methodology/](curriculum/methodology/) | Teaching principles, session structure, CEFR roadmap |
 

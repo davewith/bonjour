@@ -4,6 +4,7 @@
     "bash": {
       "*": "ask",
       "pnpm french*": "allow",
+      "pnpm french serve*": "ask",
       "pnpm speak*": "allow",
       "pnpm test*": "allow",
       "pnpm typecheck*": "allow",

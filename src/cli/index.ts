@@ -19,6 +19,7 @@ import {
   mistakeStats,
 } from "../engine/mistakes.js";
 import { startSession, endSession, recentSessions } from "../engine/sessions.js";
+import { runServer } from "../server/app.js";
 import {
   parseArgs,
   flagString,
@@ -50,6 +51,7 @@ Commands:
   progress                      Full progress report
   db backup [--out <path>]      Snapshot the database (default: data/backups/…)
   vocab [--lesson id] [--search q] [--limit n]
+  serve [--port n] [--host ip]   Start the local web UI (blocks until Ctrl-C)
 
 Global options:
   --json      Single-line JSON output (default: pretty JSON)
@@ -207,9 +209,15 @@ const commands: Record<string, Handler> = {
   }),
 
   help: () => HELP,
+
+  serve: (args, ctx) =>
+    runServer(ctx.db, {
+      port: flagInt(args, "port") ?? undefined,
+      host: flagString(args, "host") ?? undefined,
+    }),
 };
 
-function main(): void {
+async function main(): Promise<void> {
   const argv = process.argv.slice(2);
   const args = parseArgs(argv);
   const json = flagBool(args, "json");
@@ -229,7 +237,7 @@ function main(): void {
   try {
     migrate(db); // ensure schema is current before any operation
     const rest: ParsedArgs = { ...args, positionals: args.positionals.slice(1) };
-    const result = handler(rest, { db, json });
+    const result = await handler(rest, { db, json });
     emitOk(result, json);
   } catch (err) {
     emitError(err instanceof Error ? err.message : String(err), json);

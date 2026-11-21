@@ -15,6 +15,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "htm": "^3.1.1",
+    "preact": "^11.2.0",
     "yaml": "^2.9.1",
     "zod": "^4.6.7"
   },

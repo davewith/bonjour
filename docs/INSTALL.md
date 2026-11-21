@@ -97,11 +97,25 @@ opencode
 /lesson        # start the first lesson
 ```
 
+### Web UI (optional)
+
+```sh
+pnpm french serve
+# → French UI: http://127.0.0.1:7373  (Ctrl-C to stop)
+```
+
+Opens a local dashboard (due reviews, mastery, mistakes, lessons) and
+interactive practice — answer exercises in the browser, hear pronunciation,
+self-grade production tasks. It uses the same `data/learning.db` as the
+agents, so both stay in sync. Bound to 127.0.0.1 only; nothing is exposed
+to the network.
+
 ## 5. Verify (manual)
 
 - **Automated:** `pnpm test` (includes a full CLI subprocess test; Piper is
   stubbed — no audio device needed).
 - **Real audio:** follow [MANUAL_TTS_TEST.md](MANUAL_TTS_TEST.md).
+- **Web UI:** follow [MANUAL_UI_TEST.md](MANUAL_UI_TEST.md).
 - **End-to-end:** follow [ACCEPTANCE.md](ACCEPTANCE.md).
 
 ## Uninstall / reset

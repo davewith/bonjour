@@ -12,6 +12,7 @@ tutored through OpenCode agents. No cloud services, no hosted LLMs, no GPU.
 | `pnpm french <cmd> --json` | Learning-engine CLI (see `pnpm french --help`) |
 | `pnpm french db backup --json` | Snapshot the database to `data/backups/` |
 | `pnpm speak -- "text" [--no-play] [--json]` | Local French TTS (generate + play) |
+| `pnpm french serve [--port n]` | Local web UI (blocks until Ctrl-C; human-run) |
 
 After changing TypeScript, run `pnpm typecheck` and `pnpm test`.
 
@@ -23,6 +24,9 @@ After changing TypeScript, run `pnpm typecheck` and `pnpm test`.
 - `src/scheduler` — pure spaced-repetition rules (Leitner ladder, evidence-based mastery)
 - `src/tts` — TTS abstraction; Piper implementation with audio cache and player detection
 - `src/cli` — `french` engine CLI and `speak` TTS CLI
+- `src/server` — local web UI server for `french serve` (127.0.0.1 only; wraps
+  engine functions, never re-implements them)
+- `ui/` — browser frontend (preact + htm via import map, no build step)
 - `curriculum/` — teaching content (source of truth; editable without code changes)
 - `.opencode/` — tutor/examiner agents and slash commands
 - `data/` — LOCAL ONLY, gitignored: `learning.db`, `audio/` cache, `voices/` models
@@ -48,7 +52,8 @@ After changing TypeScript, run `pnpm typecheck` and `pnpm test`.
 - No network calls at runtime except optional voice downloads and the optional
   local Piper HTTP server (127.0.0.1). Never add cloud APIs.
 - TTS failures must be reported honestly (no claiming audio played).
-- Keep dependencies minimal: runtime deps are `zod` and `yaml` only.
+- Keep dependencies minimal: engine runtime deps are `zod` and `yaml` only;
+  the local UI adds just `preact` and `htm` (served unbundled, no CDN).
 - Tests must not require a real voice model or audio device (stub `piper` at
   `tests/fixtures/bin/fake-piper`); real-audio checks are manual
   (`docs/MANUAL_TTS_TEST.md`).
