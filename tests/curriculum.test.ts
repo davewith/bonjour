@@ -157,6 +157,30 @@ describe("curriculum validation errors", () => {
     expect(() => loadCurriculum(root)).toThrow();
   });
 
+  it("rejects a production exercise without an explanation", () => {
+    const root = tmpRoot();
+    const broken = VALID_LESSON.replace(
+      /    type: translation/,
+      "    type: production",
+    );
+    writeLesson(root, "bad.md", broken);
+    expect(() => loadCurriculum(root)).toThrow(/needs an explanation/);
+    expect(() => loadCurriculum(root)).toThrow(/grading guidance/);
+  });
+
+  it("accepts a production exercise with an explanation", () => {
+    const root = tmpRoot();
+    const ok = VALID_LESSON.replace(
+      /    type: translation/,
+      "    type: production",
+    ).replace(
+      "    answer: a",
+      "    answer: a\n    explanation: Any correct a earns the point.",
+    );
+    writeLesson(root, "ok.md", ok);
+    expect(() => loadCurriculum(root)).not.toThrow();
+  });
+
   it("rejects a missing curriculum directory", () => {
     expect(() => loadCurriculum(path.join(tmpRoot(), "nope"))).toThrow(
       /curriculum directory not found/,

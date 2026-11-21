@@ -209,6 +209,7 @@ exercises:
       - Je me lève à huit heures Je mange Je travaille
       - Je me lève, je prends le petit-déjeuner, puis je travaille
     hint: Use a time word, je + a verb, and "puis" to link the steps.
+    explanation: Any three truthful sentences about your morning earn the point — times, activities and wording may all differ from the example.
     difficulty: 3
 commonMistakes:
   - wrong: je travailler

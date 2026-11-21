@@ -87,6 +87,8 @@ function formatZodLikeError(err: unknown): string {
  * - lesson ids, concept ids, vocabulary ids and exercise ids are globally unique
  * - exercise.concept / exercise.vocab / vocabulary.concept reference existing ids
  * - multiple_choice exercises have options
+ * - production exercises carry an explanation (grading guidance for the
+ *   tutor — what any correct answer looks like)
  * - lesson ids are unique; (level, order) pairs are unique
  */
 export function validateLessons(lessons: Lesson[]): void {
@@ -146,6 +148,10 @@ export function validateLessons(lessons: Lesson[]): void {
       if (ex.type === "multiple_choice" && ex.options && !ex.options.includes(ex.answer))
         errors.push(
           `multiple_choice exercise "${ex.id}" answer must be one of its options (lesson ${fm.id})`,
+        );
+      if (ex.type === "production" && !ex.explanation?.trim())
+        errors.push(
+          `production exercise "${ex.id}" needs an explanation (grading guidance for the tutor) (lesson ${fm.id})`,
         );
     }
     if (fm.exercises.length === 0)

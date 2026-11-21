@@ -168,7 +168,7 @@ exercises:
     accepted:
       - Bonjour, comment ça va
       - Bonjour. Comment ça va ?
-    explanation: Bonjour + Comment ça va ? is a complete, natural opening.
+    explanation: The answer must greet and ask how they are — Bonjour + Comment ça va ? is the standard neutral opening. Accept a short Ça va ? too, and nudge that the neutral form is the default with someone you do not know.
     difficulty: 2
 commonMistakes:
   - wrong: Bonjur

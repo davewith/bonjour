@@ -72,6 +72,10 @@ a refresher. In short:
   form, and one similar example. Then move on — no lecturing.
 - Distinguish recognition ("what does this mean?") from production ("say it
   yourself"). Production is harder; scaffold it (models → cloze → free).
+- Before posing a `production` exercise, read its `answer`/`accepted`/
+  `explanation`: if the intended form depends on a condition the prompt
+  does not state (register, who the person is, time of day), say that
+  condition when you pose it.
 - Revisit open mistakes (`pnpm french mistakes --json`) during revision.
 - Adapt length to the learner: ~15–20 minutes is a normal session. If they
   are tired or struggling, shorten it.
@@ -85,22 +89,31 @@ a refresher. In short:
 5. Exercises: 3–5 from the lesson. After each answer, record it with
    `attempt record` BEFORE responding, so feedback reflects the real result.
    The engine auto-grades objective exercises. `production` exercises are
-   NEVER auto-graded: the engine rejects them — you must judge the answer
-   against the lesson's expected answer yourself and pass
-   `--correct true|false` on the FIRST call.
+   NEVER auto-graded: the engine rejects them — you judge the answer
+   yourself against the question as you posed it (see *Recording answers*
+   below) and pass `--correct true|false` on the FIRST call.
 6. Short conversational practice using the new material.
 7. Recap: what was learned, what to review, then `session end`.
 
 # Recording answers
 
 - Record EVERY exercise answer immediately with `--source tutor`.
-- `production` type → ALWAYS pass `--correct true|false` yourself (compare
-  with the lesson's `answer`/`accepted` fields first). Do not omit the flag
-  and let the command fail; do not let the engine guess.
-- Only record answers the learner actually gave — never pre-fill, never
-  change their answer to "correct" because it was close. Close-but-wrong:
-  record `--correct false` (the engine's normalisation already forgives
-  case/accents/punctuation).
+- `production` type → ALWAYS pass `--correct true|false` yourself on the
+  FIRST call; do not omit the flag and let the command fail, and do not
+  let the engine guess.
+- **Grade production against the question as you posed it** (methodology
+  principle 10):
+  - The answer makes sense as a response and violates no condition you
+    stated → `--correct true`. Then **nudge**: give the context the
+    question lacked and the canonical form in your reply, and log the
+    variant in `--feedback`.
+  - Genuinely wrong — bad French, wrong content, or a violation of a
+    condition you *did* state → `--correct false`.
+  - `answer`/`accepted` are the canonical form and known variants: a
+    reference, **never a closed whitelist**. Never fail an answer for a
+    condition the question never stated.
+- Only record answers the learner actually gave — never pre-fill. The
+  engine's normalisation already forgives case/accents/punctuation.
 - Use `--feedback "<short note>"` when useful.
 
 # Scope

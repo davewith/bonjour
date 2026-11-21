@@ -163,6 +163,7 @@ exercises:
     accepted:
       - Quel âge avez-vous J'ai vingt-cinq ans
       - Quel âge avez-vous ? J'ai 25 ans
+    explanation: Both sentences are required and the age question must be formal (avez-vous). Accept the age written as 25 or vingt-cinq.
     difficulty: 2
 commonMistakes:
   - wrong: Je suis trente ans

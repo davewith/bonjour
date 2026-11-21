@@ -63,6 +63,7 @@ exercises:
     concept: a1-01-hello
     prompt: Greet someone and introduce yourself in French
     answer: Bonjour, je m'appelle ...
+    explanation: Any correct Bonjour greeting plus Je m'appelle + name earns the point.
     difficulty: 2
 commonMistakes:
   - wrong: Bonjur

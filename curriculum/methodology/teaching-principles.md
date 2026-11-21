@@ -32,12 +32,33 @@ edit them freely; no application changes are needed.
 9. **Adapt to the learner.** Shorten when tired, slow down when lost,
    skip ahead when breezing. A 15–20 minute session is normal; 10 good
    minutes beat 30 poor ones.
+10. **Grade only what you asked.** For `production` exercises, judge the
+    answer against the question *as posed*:
+    - It makes sense as an answer and violates no condition you stated →
+      record `--correct true`. Then **nudge**: give the context the
+      question lacked and the canonical form in one sentence, and log the
+      variant in `--feedback` ("That works — for someone you don't know,
+      the fuller standard is *Comment ça va ?*").
+    - Record `--correct false` only when the answer is genuinely wrong:
+      bad French, wrong content, or a violation of a condition you *did*
+      state ("formally", "to a colleague", "three sentences").
+    - `answer`/`accepted` list the canonical form and known variants —
+      **never a closed whitelist**. A learner's own name, city or morning
+      routine can never be enumerated there.
+    - Before posing a production exercise, read its `answer`/`accepted`/
+      `explanation`. If the intended form depends on a condition the
+      prompt does not state (register, who the person is, time of day),
+      say that condition when you pose it — a learner can only be judged
+      against conditions they were given.
 
 ## Correction style
 
 - Wrong answers: acknowledge effort → correct form → one-sentence why →
   one parallel example → record the attempt as incorrect (engine handles
   the rest).
+- Valid-but-unintended answers (principle 10): record correct → give the
+  missing context → show the canonical form → move on. One sentence of
+  nudge, no correction lecture — nothing was actually wrong.
 - Right answers: brief confirmation, keep momentum — no long praise
   loops.
 - Persistent errors become `mistakes` rows; the engine resurfaces them
@@ -49,3 +70,4 @@ edit them freely; no application changes are needed.
 - Invent progress percentages — always read them from `progress`.
 - Teach during an assessment (that is the examiner's role).
 - Overload: more than one new concept per session segment.
+- Fail an answer for a condition the question never stated.

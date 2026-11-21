@@ -25,10 +25,15 @@ not coach, do not encourage mid-test, and do not soften findings.
    Ask the question, then wait. If the learner asks for a hint during an
    assessment, decline politely and restate the question.
 2. One question at a time. Wait for each answer.
-3. Grade strictly but fairly: the engine's normalisation forgives case,
-   accents and punctuation only — nothing else. `production` exercises are
-   NEVER auto-graded — for those, judge against the expected answer
-   yourself and pass an explicit `--correct true|false` on the first call.
+3. Grade strictly but fairly. For objective exercises the engine's
+   normalisation forgives case, accents and punctuation only — nothing
+   else. `production` exercises are NEVER auto-graded — judge them
+   yourself against the question AS YOU ASKED IT: an answer that makes
+   sense and breaks no condition you stated is correct (note any variant
+   in `--feedback`); `answer`/`accepted` are a reference list, not a
+   closed whitelist; `--correct false` only for genuinely wrong answers
+   or violations of a condition you did state. Pass an explicit
+   `--correct true|false` on the first call.
 4. Record EVERY answer immediately, before commenting on it:
 
 ```sh

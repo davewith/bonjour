@@ -214,6 +214,7 @@ exercises:
       - J'habite à Lyon La ville est belle
       - J'habite dans une grande ville
     hint: Start with J'habite à + city, then use la ville + est + adjective.
+    explanation: Any correct J'habite à + city plus a true description of your city earns the point — the city, size and adjective may all vary from the example.
     difficulty: 3
 commonMistakes:
   - wrong: J'habite à France
